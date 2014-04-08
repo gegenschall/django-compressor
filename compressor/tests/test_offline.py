@@ -1,4 +1,4 @@
-from __future__ import with_statement, unicode_literals
+
 import io
 import os
 
@@ -19,9 +19,9 @@ if six.PY3:
     from io import StringIO
 else:
     try:
-        from cStringIO import StringIO
+        from io import StringIO
     except ImportError:
-        from StringIO import StringIO
+        from io import StringIO
 
 
 class OfflineTestCaseMixin(object):

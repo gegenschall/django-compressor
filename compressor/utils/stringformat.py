@@ -6,7 +6,7 @@ An implementation of the advanced string formatting (PEP 3101).
 Author: Florent Xicluna
 """
 
-from __future__ import unicode_literals
+
 
 import re
 
@@ -228,13 +228,13 @@ class FormattableString(object):
         # Encode arguments to ASCII, if format string is bytes
         want_bytes = isinstance(self._string, str)
         params = {}
-        for name, items in self._kwords.items():
+        for name, items in list(self._kwords.items()):
             value = kwargs[name]
             for item in items:
                 parts, conv, spec = item
                 params[str(id(item))] = _format_field(value, parts, conv, spec,
                                                       want_bytes)
-        for name, items in self._nested.items():
+        for name, items in list(self._nested.items()):
             value = kwargs[name]
             for item in items:
                 parts, conv, spec = item

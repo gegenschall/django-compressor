@@ -1,4 +1,4 @@
-from __future__ import absolute_import, unicode_literals
+
 import io
 import logging
 import subprocess
@@ -110,12 +110,12 @@ class CompilerFilter(FilterBase):
         if isinstance(self.options, dict):
             # turn dict into a tuple
             new_options = ()
-            for item in kwargs.items():
+            for item in list(kwargs.items()):
                 new_options += (item,)
             self.options = new_options
 
         # append kwargs to self.options
-        for item in kwargs.items():
+        for item in list(kwargs.items()):
             self.options += (item,)
 
         self.stdout = self.stdin = self.stderr = subprocess.PIPE

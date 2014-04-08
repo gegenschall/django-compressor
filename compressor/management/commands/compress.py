@@ -32,9 +32,9 @@ if six.PY3:
     from io import StringIO
 else:
     try:
-        from cStringIO import StringIO
+        from io import StringIO
     except ImportError:
-        from StringIO import StringIO
+        from io import StringIO
 
 
 def patched_render(self, context):
@@ -77,7 +77,7 @@ def patched_render_firstnode(self, context):
             # work. Therefore, we need to pop() the last block context for
             # each block name, to emulate what would have been done if the
             # {% block %} had been fully rendered.
-            for blockname in firstnode.blocks.keys():
+            for blockname in list(firstnode.blocks.keys()):
                 context.render_context[BLOCK_CONTEXT_KEY].pop(blockname)
         except (IOError, TemplateSyntaxError, TemplateDoesNotExist):
             # That first node we are trying to render might cause more errors
@@ -251,13 +251,13 @@ class Command(NoArgsCommand):
         if verbosity > 0:
             log.write("Found 'compress' tags in:\n\t" +
                       "\n\t".join((t.template_name
-                                   for t in compressor_nodes.keys())) + "\n")
+                                   for t in list(compressor_nodes.keys()))) + "\n")
 
         log.write("Compressing... ")
         count = 0
         results = []
         offline_manifest = SortedDict()
-        for template, nodes in compressor_nodes.items():
+        for template, nodes in list(compressor_nodes.items()):
             context = Context(settings.COMPRESS_OFFLINE_CONTEXT)
             template._log = log
             template._log_verbosity = verbosity

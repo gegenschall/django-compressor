@@ -1,4 +1,4 @@
-from __future__ import with_statement, unicode_literals
+
 import os
 import codecs
 
@@ -7,11 +7,12 @@ from django.template import Context
 from django.template.loader import render_to_string
 from django.utils.importlib import import_module
 from django.utils.safestring import mark_safe
+import collections
 
 try:
     from urllib.request import url2pathname
 except ImportError:
-    from urllib import url2pathname
+    from urllib.request import url2pathname
 
 from compressor.cache import get_hexdigest, get_mtime
 from compressor.conf import settings
@@ -270,7 +271,7 @@ class Compressor(object):
             filter_func = getattr(
                 filter_cls(content, filter_type=self.type), method)
             try:
-                if callable(filter_func):
+                if isinstance(filter_func, collections.Callable):
                     content = filter_func(**kwargs)
             except NotImplementedError:
                 pass
@@ -296,7 +297,7 @@ class Compressor(object):
     def handle_output(self, mode, content, forced, basename=None):
         # Then check for the appropriate output method and call it
         output_func = getattr(self, "output_%s" % mode, None)
-        if callable(output_func):
+        if isinstance(output_func, collections.Callable):
             return output_func(mode, content, forced, basename)
         # Total failure, raise a general exception
         raise CompressorError(

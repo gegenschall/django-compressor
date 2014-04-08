@@ -1,4 +1,4 @@
-from __future__ import with_statement, unicode_literals
+
 import os
 import re
 
@@ -28,7 +28,7 @@ def make_soup(markup):
 
 
 def css_tag(href, **kwargs):
-    rendered_attrs = ''.join(['%s="%s" ' % (k, v) for k, v in kwargs.items()])
+    rendered_attrs = ''.join(['%s="%s" ' % (k, v) for k, v in list(kwargs.items())])
     template = '<link rel="stylesheet" href="%s" type="text/css" %s/>'
     return template % (href, rendered_attrs)
 

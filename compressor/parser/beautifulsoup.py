@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 from django.core.exceptions import ImproperlyConfigured
 from django.utils import six
 from django.utils.encoding import smart_text
